@@ -4,6 +4,25 @@
 
 
 {% block content %}
+    <script>
+        const USERNAME_UNIQUE_URL = "{{ url_for('auth.username_unique') }}";
+        const EMAIL_UNIQUE_URL = "{{ url_for('auth.email_unique') }}";
+    </script>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="container d-flex justify-content-center">
+                {% for category, message in messages %}
+                    <div class="alert alert-absolute alert-dismissible {{ category }} fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            </div>
+
+        {% endif %}
+    {% endwith %}
+
     <div class="row justify-content-center align-items-center">
         <div class="col-12 col-md-8 col-lg-6 col-xl-5">
             <div class="card">
@@ -22,13 +41,15 @@
                         <div class="form-outline mb-4">
                             <label class="form-label" for="email">Email</label>
                             <input class="form-control" type="email" id="email" name="email" placeholder="Your email" {% if email %}value="{{ email }}"{% endif %} required>
+                            <div class="invalid-feedback">
+                                Email taken. Please choose a different email.
+                            </div>
                         </div>
                         <div class="form-outline mb-4">
-                            <label class="form-label" for="fname">First and last name</label>
-                            <div class="input-group">
-                                <!-- <span class="input-group-text">First and last name</span> -->
-                                <input class="form-control" type="text" id="fname" name="fname" placeholder="Your first name" required>
-                                <input class="form-control" type="text" id="lname" name="lname" placeholder="Your last name" required>
+                            <label class="form-label" for="fname">Username</label>
+                            <input class="form-control" type="text" id="username" name="username" placeholder="Your username" required>
+                            <div class="invalid-feedback">
+                                Username taken. Please choose a different username.
                             </div>
                         </div>
 
@@ -40,6 +61,9 @@
                         <div class="form-outline mb-4">
                             <label class="form-label" for="password2">Password Again</label>
                             <input class="form-control" type="password" id="password2" name="password2" placeholder="Password" required>
+                            <div class="invalid-feedback">
+                                Password does not match
+                            </div>
                         </div>
 
                         <div class="form-outline pt-4">
@@ -51,4 +75,8 @@
             </div>
         </div>
     </div>
+
+
+    <script src="/static/js/checkUserValid.js"></script>
+    <script src="/static/js/checkPassword.js"></script>
 {% endblock content %}

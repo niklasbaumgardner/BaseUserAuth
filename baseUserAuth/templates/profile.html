@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Profile{% endblock title %}
+{% block profile %}active{% endblock profile %}
+
+
+{% block content %}
+    <script>
+        const USERNAME_UNIQUE_URL = "{{ url_for('auth.username_unique') }}";
+        const EMAIL_UNIQUE_URL = "{{ url_for('auth.email_unique') }}";
+    </script>
+
+    <div class="row justify-content-center align-items-center">
+        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+            <div class="card">
+                <div class="card-header px-3">
+                    <div class="fs-4">
+                        Account details
+                    </div>
+                </div>
+
+                <div class="card-body px-5 pb-5">
+                    <form action="{{ url_for('auth.profile') }}" method="POST" autocomplete="off">
+                        <div class="mb-4">
+                            <div class="form-outline mb-4">
+                                <label class="form-label" for="email">Username</label>
+                                <input class="form-control" type="text" id="username" name="username" value="{{ username }}" original-value="{{ username }}" required/>
+                                <div class="invalid-feedback">
+                                    Username taken. Please choose a different username.
+                                </div>
+                            </div>
+
+                            <div class="form-outline mb-4">
+                                <label class="form-label" for="email">Email</label>
+                                <input type="email" id="email" name="email" class="form-control" value="{{ email }}" original-value="{{ email }}" required/>
+                                <div class="invalid-feedback">
+                                    Email taken. Please choose a different email.
+                                </div>
+                            </div>
+
+                            <p class="mb-4"><a class="" href="{{ url_for('auth.password_request') }}">Reset password</a></p>
+                            <button class="btn btn-outline-primary px-5" type="submit">Update</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/checkUserValid.js"></script>
+{% endblock content %}

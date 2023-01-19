@@ -33,10 +33,10 @@ def login():
             return redirect(url_for("home.index"))
 
         elif user:
-            flash("Password was incorrect. Try again", "w3-pale-red")
+            flash("Password was incorrect. Try again", "alert-primary")
             return render_template("login.html", email=email)
 
-        flash("User not found. Please create an acount", "w3-pale-red")
+        flash("User not found. Please create an acount", "alert-primary")
     print("last", "next", request.args.get("next"))
     return render_template("login.html", email=email)
 
@@ -45,26 +45,27 @@ def login():
 def signup():
     if request.method == "POST":
         email = request.form.get("email")
-        fname = request.form.get("fname")
-        lname = request.form.get("lname")
+        username = request.form.get("username")
         password1 = request.form.get("password1")
         password2 = request.form.get("password2")
 
-        user = User.query.filter_by(email=email).first()
-
-        if user:
-            flash("Email already exists. Please log in", "w3-pale-red")
+        if not is_email_unique(email):
+            flash("Email already exists. Please log in", "alert-primary")
             return redirect(url_for("auth.login", email=email))
 
+        if not is_username_unique(username):
+            flash("Username already exists. Please choose a different username", "alert-primary")
+            return render_template("signup.html")
+
         if password1 != password2:
-            flash("Passwords don't match. Try again", "w3-pale-red")
+            flash("Passwords don't match. Try again", "alert-primary")
             return render_template("signup.html", email=email)
         hash_ = bcrypt.generate_password_hash(password1).decode("utf-8")
 
-        new_user = User(email=email, name=fname + " " + lname, password=hash_)
+        new_user = User(email=email, username=username, password=hash_)
         db.session.add(new_user)
         db.session.commit()
-        flash("Sign up succesful", "w3-pale-green")
+        flash("Sign up succesful", "alert-primary")
         return redirect(url_for("auth.login"))
 
     return render_template("signup.html")
@@ -82,7 +83,8 @@ def password_request():
         user = User.query.filter_by(email=email).first()
         send_reset_email(user)
         flash(
-            "An email has been sent with instructions to reset your password. (Check spam folder)"
+            "An email has been sent with instructions to reset your password. (Check spam folder)",
+            "alert-primary",
         )
         return redirect(url_for("auth.login"))
 
@@ -96,7 +98,7 @@ def password_reset():
     if request.method == "POST":
         user = User.verify_reset_token(token)
         if not user:
-            flash("That is an invalid or expired token")
+            flash("That is an invalid or expired token", "alert-primary")
 
         password1 = request.form.get("password1")
         password2 = request.form.get("password2")
@@ -108,10 +110,29 @@ def password_reset():
         hash_ = bcrypt.generate_password_hash(password1).decode("utf-8")
         user.password = hash_
         db.session.commit()
-        flash("Your password has been updated! You are now able to log in")
+        flash("Your password has been updated! You are now able to log in", "alert-primary")
         return redirect(url_for("auth.login"))
 
     return render_template("password_reset.html")
+
+
+@auth.route("/profile", methods=["GET", "POST"])
+@login_required
+def profile():
+    user = User.query.filter_by(id=current_user.get_id()).first()
+    if request.method == "POST":
+        username = request.form.get("username")
+        if username:
+            user.username = username
+
+        email = request.form.get("email")
+        if email:
+            user.email = email
+
+        db.session.commit()
+
+        return redirect(url_for("auth.profile"))
+    return render_template("profile.html", username=user.username, email=user.email)
 
 
 @auth.route("/logout")
@@ -119,6 +140,28 @@ def password_reset():
 def logout():
     logout_user()
     return redirect(url_for("auth.login"))
+
+
+@auth.route("/username_unique", methods=["GET"])
+def username_unique():
+    username = request.args.get("username")
+
+    return {"isUnique": is_username_unique(username) }
+
+
+def is_username_unique(username):
+    return not User.query.filter_by(username=username).first()
+
+
+@auth.route("/email_unique", methods=["GET"])
+def email_unique():
+    email = request.args.get("email")
+
+    return {"isUnique": is_email_unique(email) }
+
+
+def is_email_unique(email):
+    return not User.query.filter_by(email=email).first()
 
 
 def send_reset_email(user):
