@@ -18,7 +18,7 @@ def create_app():
     bcrypt.init_app(app)
     login_manager.init_app(app)
     login_manager.login_view = 'auth.login'
-    login_manager.login_message_category = 'w3-pale-red'
+
     mail.init_app(app)
 
     from baseUserAuth.user.auth import auth as auth_blueprint
