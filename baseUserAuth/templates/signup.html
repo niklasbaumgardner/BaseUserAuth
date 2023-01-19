@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Sign Up{% endblock title %}
+
+
+{% block content %}
+    <div class="row justify-content-center align-items-center">
+        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+            <div class="card">
+                <div class="card-header px-3">
+                    <div class="fs-4">
+                        Sign up
+                    </div>
+                    <div class="">
+                        Please enter your name, your email, and a password
+                    </div>
+                </div>
+                <div class="card-body px-5 pb-5">
+
+                <form action="{{ url_for('auth.signup') }}" method="POST">
+                    <div class="mb-4">
+                        <div class="form-outline mb-4">
+                            <label class="form-label" for="email">Email</label>
+                            <input class="form-control" type="email" id="email" name="email" placeholder="Your email" {% if email %}value="{{ email }}"{% endif %} required>
+                        </div>
+                        <div class="form-outline mb-4">
+                            <label class="form-label" for="fname">First and last name</label>
+                            <div class="input-group">
+                                <!-- <span class="input-group-text">First and last name</span> -->
+                                <input class="form-control" type="text" id="fname" name="fname" placeholder="Your first name" required>
+                                <input class="form-control" type="text" id="lname" name="lname" placeholder="Your last name" required>
+                            </div>
+                        </div>
+
+                        <div class="form-outline mb-4">
+                            <label class="form-label" for="password1">Password</label>
+                            <input class="form-control" type="password" id="password1" name="password1" placeholder="Password" required>
+                        </div>
+
+                        <div class="form-outline mb-4">
+                            <label class="form-label" for="password2">Password Again</label>
+                            <input class="form-control" type="password" id="password2" name="password2" placeholder="Password" required>
+                        </div>
+
+                        <div class="form-outline pt-4">
+                            <input class="btn btn-outline-primary" type="submit" value="Sign Up">
+                        </div>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
