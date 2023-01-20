@@ -21,6 +21,9 @@ def getUserByEmail(email):
 def updateUser(id, username, email):
     user = getUserById(id=id)
 
+    username = username if is_username_unique(username=username) else None
+    email = email if is_email_unique(email=email) else None
+
     if username:
         user.username = username
 

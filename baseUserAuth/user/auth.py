@@ -124,7 +124,7 @@ def profile():
         username = request.form.get("username")
         email = request.form.get("email")
 
-        queries.updateUser(email=email, username=username)
+        queries.updateUser(id=user.id, email=email, username=username)
 
         return redirect(url_for("auth.profile"))
     return render_template("profile.html", username=user.username, email=user.email)
