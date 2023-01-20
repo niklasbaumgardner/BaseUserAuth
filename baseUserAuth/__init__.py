@@ -19,6 +19,7 @@ def create_app():
     bcrypt.init_app(app)
     login_manager.init_app(app)
     login_manager.login_view = "auth.login"
+    login_manager.login_message_category = "alert-primary"
 
     mail.init_app(app)
 
