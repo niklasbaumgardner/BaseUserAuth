@@ -29,6 +29,15 @@ def login():
             remember = True if remember == "True" else False
             login_user(user, remember=remember)
             print(email, "next", request.args.get("next"))
+            next = request.args.get("next").replace("/", "", 1)
+            if next:
+                try:
+                    return redirect(url_for(f"home.{next}"))
+                except:
+                    try:
+                        return redirect(url_for(f"auth.{next}"))
+                    except:
+                        pass
             return redirect(url_for("home.index"))
 
         elif user:
