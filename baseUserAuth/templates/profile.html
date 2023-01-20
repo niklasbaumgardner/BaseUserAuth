@@ -38,8 +38,9 @@
                                 </div>
                             </div>
 
-                            <p class="mb-4"><a class="" href="{{ url_for('auth.password_request') }}">Reset password</a></p>
-                            <button class="btn btn-outline-primary" type="submit">Update</button>
+                            <button class="btn btn-primary w-100 mb-2" type="submit" disabled="true">Update</button>
+
+                            <p class="small"><a href="{{ url_for('auth.password_request') }}">Reset password</a></p>
                         </div>
                     </form>
                 </div>
