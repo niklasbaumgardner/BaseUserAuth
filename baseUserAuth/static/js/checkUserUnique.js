@@ -16,6 +16,18 @@ async function sendEmailRequest(email) {
   return response;
 }
 
+function enableSubmitButton() {
+  let ele = document.querySelector('button[type="submit"]')
+  console.log(ele);
+  ele.disabled = false;
+}
+
+function disableSubmitButton() {
+  let ele = document.querySelector('button[type="submit"]')
+  console.log(ele);
+  ele.disabled = true;
+}
+
 let usernameInput = document.getElementById("username");
 usernameInput.addEventListener("input", async event => {
   let orginalValue = event.target.getAttribute("original-value");
@@ -25,14 +37,17 @@ usernameInput.addEventListener("input", async event => {
   if (orginalValue === newValue) {
     // don't need to send request
     invalidMessage.classList.remove("display-block");
+    disableSubmitButton();
   } else {
     let result = await sendUsernameRequest(newValue);
     console.log("username is unique", result.isUnique);
 
     if (result.isUnique) {
       invalidMessage.classList.remove("display-block");
+      enableSubmitButton();
     } else {
       invalidMessage.classList.add("display-block");
+      disableSubmitButton();
     }
   }
 });
@@ -46,14 +61,17 @@ emailInput.addEventListener("input", async event => {
   if (orginalValue === newValue) {
     // don't need to send request
     invalidMessage.classList.remove("display-block");
+    disableSubmitButton();
   } else {
     let result = await sendEmailRequest(event.target.value);
     console.log("email is unique", result.isUnique);
 
     if (result.isUnique) {
       invalidMessage.classList.remove("display-block");
+      enableSubmitButton();
     } else {
       invalidMessage.classList.add("display-block");
+      disableSubmitButton();
     }
   }
 });
