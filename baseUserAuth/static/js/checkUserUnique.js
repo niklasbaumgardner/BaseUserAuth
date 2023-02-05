@@ -1,35 +1,43 @@
 "use strict";
 
 async function sendUsernameRequest(username) {
-  let response = await fetch(USERNAME_UNIQUE_URL + "?" + new URLSearchParams({
-    username,
-  }));
+  let response = await fetch(
+    USERNAME_UNIQUE_URL +
+      "?" +
+      new URLSearchParams({
+        username,
+      })
+  );
   response = await response.json();
   return response;
 }
 
 async function sendEmailRequest(email) {
-  let response = await fetch(EMAIL_UNIQUE_URL + "?" + new URLSearchParams({
-    email,
-  }));
+  let response = await fetch(
+    EMAIL_UNIQUE_URL +
+      "?" +
+      new URLSearchParams({
+        email,
+      })
+  );
   response = await response.json();
   return response;
 }
 
 function enableSubmitButton() {
-  let ele = document.querySelector('button[type="submit"]')
+  let ele = document.querySelector('button[type="submit"]');
   console.log(ele);
   ele.disabled = false;
 }
 
 function disableSubmitButton() {
-  let ele = document.querySelector('button[type="submit"]')
+  let ele = document.querySelector('button[type="submit"]');
   console.log(ele);
   ele.disabled = true;
 }
 
 let usernameInput = document.getElementById("username");
-usernameInput.addEventListener("input", async event => {
+usernameInput.addEventListener("input", async (event) => {
   let orginalValue = event.target.getAttribute("original-value");
   let newValue = event.target.value;
   let invalidMessage = event.target.nextElementSibling;
@@ -53,7 +61,7 @@ usernameInput.addEventListener("input", async event => {
 });
 
 let emailInput = document.getElementById("email");
-emailInput.addEventListener("input", async event => {
+emailInput.addEventListener("input", async (event) => {
   let orginalValue = event.target.getAttribute("original-value");
   let newValue = event.target.value;
   let invalidMessage = event.target.nextElementSibling;

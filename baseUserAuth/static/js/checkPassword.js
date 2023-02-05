@@ -1,4 +1,4 @@
-"user strict";
+"use strict";
 
 function checkPasswordsEqual() {
   let password1 = document.getElementById("password1").value;

@@ -24,11 +24,9 @@ def create_app():
     mail.init_app(app)
 
     from baseUserAuth.user.auth import auth as auth_blueprint
-
     app.register_blueprint(auth_blueprint)
 
     from baseUserAuth.home.home import home as home_blueprint
-
     app.register_blueprint(home_blueprint)
 
     with app.app_context():

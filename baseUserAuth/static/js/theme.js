@@ -17,8 +17,6 @@ function getThemeButtons() {
 function setTheme(theme) {
   theme = theme === "dark" ? "dark" : "light";
 
-  console.log("setting theme", theme);
-
   // Set html element theme
   document.documentElement.setAttribute("data-bs-theme", theme);
 
