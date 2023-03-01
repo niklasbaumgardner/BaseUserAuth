@@ -45,7 +45,7 @@ def updateUserPasswod(id, password):
 
 
 def hashPassword(password):
-    return bcrypt.generate_password_has(password=password).decode("uft-8")
+    return bcrypt.generate_password_hash(password=password).decode("utf-8")
 
 
 def is_email_unique(email):
